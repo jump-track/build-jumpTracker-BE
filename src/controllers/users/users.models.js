@@ -1,0 +1,15 @@
+const knex = require('../../data/dbConfig.js');
+
+const insert = async user =>
+  knex('users')
+    .insert(user)
+
+const find = async id =>
+  knex('users')
+    .where('id', id)
+    .first()
+
+module.exports = {
+  insert,
+  find
+}

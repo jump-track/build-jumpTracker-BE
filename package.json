@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
+    "start": "node index.js",
+    "test": "cross-env DB_ENV=testing jest --watch --verbose",
     "server": "nodemon src/index.js"
   },
   "repository": "https://github.com/jump-track/build-jumpTracker-BE-.git",
