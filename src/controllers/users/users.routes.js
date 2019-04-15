@@ -7,6 +7,7 @@ router.post('/register',
   validateInputs,
   validateDataType,
   usernameLowerCase,
+  usernameIsUnique,
   hashPassword,
   async (req, res) => {
     const { username, password, height, jumpHeight: jump_height } = req.body;
@@ -36,6 +37,20 @@ async function hashPassword(req, res, next) {
 function usernameLowerCase(req, res, next) {
   req.body.username = req.body.username.toLowerCase();
   next();
+}
+
+async function usernameIsUnique(req, res, next) {
+  try {
+    const resource = await db.get(req.body.username);
+    if (resource && resource.username) {
+      res.status(400).json({ message: 'Choose a different username'})
+    } else {
+      next();
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json(err);
+  }
 }
 
 function validateDataType(req, res, next) {

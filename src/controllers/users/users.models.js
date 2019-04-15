@@ -9,7 +9,14 @@ const find = async id =>
     .where('id', id)
     .first()
 
+const get = async username =>
+  knex('users')
+    .select('username')
+    .where('username', username)
+    .first()
+
 module.exports = {
   insert,
-  find
+  find,
+  get
 }
