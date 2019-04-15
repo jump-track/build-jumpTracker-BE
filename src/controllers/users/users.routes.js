@@ -4,7 +4,6 @@ const db = require('./users.models.js');
 const jwt = require('../../utils/jwt.js');
 
 router.post('/register',
-  console.log(req.body),
   validateInputs,
   validateDataType,
   usernameLowerCase,
@@ -79,6 +78,7 @@ function validateDataType(req, res, next) {
 }
 
 function validateInputs(req, res, next) {
+  console.log(req.body);
   const { username, password, height, jumpHeight } = req.body;
   if (username && password && height && jumpHeight) {
     next()
