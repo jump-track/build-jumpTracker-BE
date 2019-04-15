@@ -2,7 +2,7 @@ const knex = require('../../data/dbConfig.js');
 
 const insert = async user =>
   knex('users')
-    .insert(user)
+    .insert(user, ['id'])
 
 const find = async id =>
   knex('users')
