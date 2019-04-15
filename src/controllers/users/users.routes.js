@@ -8,6 +8,7 @@ router.post('/login',
   loginDataType,
   usernameLowerCase,
   async (req, res, next) => {
+    console.log(req.body);
     const { username, password } = req.body;
     try {
       const user = await db.validate(username)
