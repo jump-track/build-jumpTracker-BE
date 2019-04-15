@@ -4,6 +4,7 @@ const db = require('./users.models.js');
 const jwt = require('../../utils/jwt.js');
 
 router.post('/register',
+  console.log(req.body),
   validateInputs,
   validateDataType,
   usernameLowerCase,
