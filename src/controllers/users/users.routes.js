@@ -10,9 +10,14 @@ router.post('/register',
   usernameIsUnique,
   hashPassword,
   async (req, res) => {
-    const { username, password, height, jumpHeight: jump_height } = req.body;
+    const userObj = {
+      username: req.body.username,
+      password: req.body.password,
+      height: req.body.height,
+      jump_height: req.body.jumpHeight
+    }
     try {
-      const [id] = await db.insert({ username, password, height, jump_height });
+      const [id] = await db.insert(userObj);
       if (id) {
         const token = await jwt.sign({ id, username: req.body.username });
         res.status(201).json(token);
