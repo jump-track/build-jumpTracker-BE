@@ -18,9 +18,12 @@ router.post('/register',
     }
     try {
       const arr = await db.insert(userObj);
+      console.log('-------', arr, '-------');
       const id = arr[0];
       if (id) {
+        console.log('-------', id, '-------');
         const token = await jwt.sign({ id, username: req.body.username });
+        console.log('-------', token, '-------');
         res.status(201).json(token);
       }
     } catch (err) {
@@ -49,7 +52,7 @@ async function usernameIsUnique(req, res, next) {
   try {
     const resource = await db.get(req.body.username);
     if (resource && resource.username) {
-      res.status(400).json({ message: 'Choose a different username'})
+      res.status(400).json({ message: 'Choose a different username' })
     } else {
       next();
     }
