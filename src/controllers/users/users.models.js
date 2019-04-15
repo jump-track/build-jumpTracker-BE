@@ -15,8 +15,15 @@ const get = async username =>
     .where('username', username)
     .first()
 
+const validate = async username =>
+  knex('users')
+    .select('username', 'id', 'password')
+    .where('username', username)
+    .first()
+
 module.exports = {
   insert,
   find,
-  get
+  get,
+  validate
 }

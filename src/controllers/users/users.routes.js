@@ -3,9 +3,30 @@ const bcrypt = require('bcryptjs');
 const db = require('./users.models.js');
 const jwt = require('../../utils/jwt.js');
 
+router.post('/login',
+  loginInputs,
+  loginDataType,
+  usernameLowerCase,
+  async (req, res, next) => {
+    const { username, password } = req.body;
+    try {
+      const user = await db.validate(username)
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = await jwt.sign({ id: user.id, username: user.username })
+        res.status(200).json(token);
+      } else {
+        res.status(401).json({ message: 'Invalid Credentials' });
+      }
+    } catch (err) {
+      console.log(err);
+      res.status(500).json(err);
+    }
+  });
+
+
 router.post('/register',
-  validateInputs,
-  validateDataType,
+  registerInputs,
+  registerDataType,
   usernameLowerCase,
   usernameIsUnique,
   hashPassword,
@@ -18,12 +39,9 @@ router.post('/register',
     }
     try {
       const arr = await db.insert(userObj);
-      console.log('-------', arr, '-------');
       const id = arr[0];
       if (id) {
-        console.log('-------', id, '-------');
         const token = await jwt.sign({ id, username: req.body.username });
-        console.log('-------', token, '-------');
         res.status(201).json(token);
       }
     } catch (err) {
@@ -32,6 +50,26 @@ router.post('/register',
     }
   }
 );
+
+async function loginDataType(req, res, next) {
+  const { username, password } = req.body;
+  if (typeof username !== 'string') {
+    res.status(400).json({ message: 'Username must be a string' });
+  } else if (typeof password !== 'string') {
+    res.status(400).json({ message: 'Password must be a string' });
+  } else {
+    next();
+  }
+}
+
+async function loginInputs(req, res, next) {
+  const { username, password } = req.body;
+  if (username && password) {
+    next();
+  } else {
+    res.status(400).json({ message: 'All fields required' });
+  }
+}
 
 
 async function hashPassword(req, res, next) {
@@ -62,7 +100,7 @@ async function usernameIsUnique(req, res, next) {
   }
 }
 
-function validateDataType(req, res, next) {
+function registerDataType(req, res, next) {
   const { username, password, height, jumpHeight } = req.body;
   if (typeof username !== 'string') {
     res.status(400).json({ message: 'Username must be a string' });
@@ -77,7 +115,7 @@ function validateDataType(req, res, next) {
   }
 }
 
-function validateInputs(req, res, next) {
+function registerInputs(req, res, next) {
   console.log(req.body);
   const { username, password, height, jumpHeight } = req.body;
   if (username && password && height && jumpHeight) {
