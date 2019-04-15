@@ -17,7 +17,8 @@ router.post('/register',
       jump_height: req.body.jumpHeight
     }
     try {
-      const [id] = await db.insert(userObj);
+      const arr = await db.insert(userObj);
+      const id = arr[0];
       if (id) {
         const token = await jwt.sign({ id, username: req.body.username });
         res.status(201).json(token);
