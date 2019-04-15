@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "src/index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node src/index.js",
     "test": "cross-env DB_ENV=testing jest --watch --verbose",
     "server": "nodemon src/index.js"
   },
