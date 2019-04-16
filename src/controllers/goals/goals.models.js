@@ -2,8 +2,7 @@ const knex = require('../../data/dbConfig.js');
 
 const insertGoal = async goal =>
   knex('goals')
-    .insert(goal)
-// .insert(goal, ['id'])
+    .insert(goal, ['id'])
 
 const getGoals = async id =>
   knex('goals')

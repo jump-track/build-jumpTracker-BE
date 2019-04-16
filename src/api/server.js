@@ -5,7 +5,8 @@ const cors = require('cors');
 const server = express();
 
 const users = require('../controllers/users/users.routes.js');
-const goals = require('../controllers/goals/goals.routes.js')
+const goals = require('../controllers/goals/goals.routes.js');
+const exercises = require('../controllers/exercises/exercises.models.js');
 
 server.use(helmet());
 server.use(express.json());

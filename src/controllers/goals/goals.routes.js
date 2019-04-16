@@ -77,6 +77,4 @@ router.delete('/:goalId', restricted, async (req, res) => {
   }
 });
 
-
-
 module.exports = router;
