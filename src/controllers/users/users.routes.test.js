@@ -3,7 +3,7 @@ const server = require('../../api/server.js');
 
 describe('users route', () => {
   describe('POST /users/register', () => {
-    it('should respond with 201 Create and return token', async () => {
+    it.skip('should respond with 201 Create and return token', async () => {
       const userObj = {
         username: 'test62',
         password: 'test62',

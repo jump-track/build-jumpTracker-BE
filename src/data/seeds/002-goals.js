@@ -1,5 +1,11 @@
 exports.seed = knex =>
   knex('goals')
     .insert([
-      { jump_height: 50, target_date: 1, user_id: 1 }
+      {
+        user_id: 1,
+        jump_height: 50,
+        start_date: 'April 16th 2019',
+        target_date: 'April 30th 2019',
+        completed: false
+      }
     ]);

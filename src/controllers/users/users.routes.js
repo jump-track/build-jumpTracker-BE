@@ -11,7 +11,7 @@ router.post('/login',
     console.log(req.body);
     const { username, password } = req.body;
     try {
-      const user = await db.validate(username)
+      const user = await db.validateUser(username)
       if (user && bcrypt.compareSync(password, user.password)) {
         const token = await jwt.sign({ id: user.id, username: user.username })
         res.status(200).json(token);
@@ -39,7 +39,7 @@ router.post('/register',
       jump_height: req.body.jumpHeight
     }
     try {
-      const arr = await db.insert(userObj);
+      const arr = await db.insertUser(userObj);
       const id = arr[0];
       if (id) {
         const token = await jwt.sign({ id, username: req.body.username });
@@ -89,7 +89,7 @@ function usernameLowerCase(req, res, next) {
 
 async function usernameIsUnique(req, res, next) {
   try {
-    const resource = await db.get(req.body.username);
+    const resource = await db.getByUsername(req.body.username);
     if (resource && resource.username) {
       res.status(400).json({ message: 'Choose a different username' })
     } else {
