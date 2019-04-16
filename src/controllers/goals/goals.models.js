@@ -8,21 +8,27 @@ const insertGoal = async goal =>
 const getGoals = async id =>
   knex('goals')
     .where('user_id', id)
+    .select('id', 'jump_height', 'start_date', 'target_date', 'completed')
 
 const findById = async id =>
   knex('goals')
     .where('id', id)
 
-const updateGoal = async (id, goal) =>
+const updateGoal = async (userId, goalId, goal) =>
   knex('goals')
-    .where('id', id)
+    .where({
+      user_id: userId,
+      id: goalId
+    })
     .update(goal)
 
-const deleteGoal = async id => {
+const deleteGoal = async (userId, goalId) =>
   knex('goals')
-    .where('id', id)
+    .where({
+      user_id: userId,
+      id: goalId
+    })
     .del()
-}
 
 module.exports = {
   insertGoal,

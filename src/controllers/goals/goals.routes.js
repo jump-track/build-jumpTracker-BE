@@ -1,21 +1,26 @@
 const router = require('express').Router();
 const moment = require('moment');
 const db = require('./goals.models.js');
+const { restricted } = require('../../utils/auth.js');
 
-router.get('/', async (req, res) => {
-  const id = 1;
+router.get('/', restricted, async (req, res) => {
+  const id = req.decodedJwt.id;
+  console.log(req.decodedJwt);
   try {
     const goals = await db.getGoals(id)
-    console.log(goals);
+    const response = goals.map(goal => ({
+      ...goal, completed: goal.completed ? 'true' : 'false'
+    }));
+    res.status(200).json(response);
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', restricted, async (req, res) => {
   const goalObj = {
-    user_id: 1,
+    user_id: req.decodedJwt.id,
     jump_height: req.body.jumpHeight,
     start_date: moment().format('MMMM Do YYYY'),
     target_date: moment().add(req.body.target, 'w').format('MMMM Do YYYY'),
@@ -32,17 +37,17 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.put('/:id', async (req, res) => {
-  const { id } = req.params;
+router.put('/:goalId', restricted, async (req, res) => {
+  const { goalId } = req.params;
+  const userId = req.decodedJwt.id;
   const goalObj = {
-    user_id: 1,
     jump_height: req.body.jumpHeight,
-    start_date: moment().format('MMMM Do YYYY'),
-    target_date: moment().add(req.body.target, 'w').format('MMMM Do YYYY'),
-    completed: false
+    completed: req.body.completed
   }
+  console.log(goalId);
   try {
-    const result = await db.updateGoal(id, goalObj);
+    const result = await db.updateGoal(userId, goalId, goalObj);
+    console.log(result);
     if (result) {
       res.status(200).json({ message: 'Goal updated' });
     } else {
@@ -54,16 +59,18 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-router.delete('/:id', async (req, res) => {
-  const { id } = req.params;
+router.delete('/:goalId', restricted, async (req, res) => {
+  const { goalId } = req.params;
+  const userId = req.decodedJwt.id;
+  console.log(goalId, userId);
   try {
-    const result = await db.deleteGoal(1);
+    const result = await db.deleteGoal(userId, goalId);
     console.log(result);
-    // if (result) {
-    //   res.status(200).json({ message: 'Goal deleted' });
-    // } else {
-    //   res.status(404).json({ message: 'Goal not found' });
-    // }
+    if (result) {
+      res.status(200).json({ message: 'Goal deleted' });
+    } else {
+      res.status(404).json({ message: 'Goal not found' });
+    }
   } catch (err) {
     console.log(err);
     res.status(500).json(err);
