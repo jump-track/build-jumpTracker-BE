@@ -43,7 +43,7 @@ router.put('/:goalId', restricted, async (req, res) => {
   const goalObj = {
     completed: req.body.completed
   }
-  console.log(goalId);
+  console.log(goalObj);
   try {
     const result = await db.updateGoal(userId, goalId, goalObj);
     console.log(result);

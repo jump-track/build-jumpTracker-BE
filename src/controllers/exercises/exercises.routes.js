@@ -3,10 +3,10 @@ const moment = require('moment');
 const db = require('./exercises.models.js');
 const { restricted } = require('../../utils/auth.js');
 
-router.get('/:exId', restricted, async (req, res) => {
-  const { exId } = req.params;
+router.get('/:goalId', restricted, async (req, res) => {
+  const { goalId } = req.params;
   try {
-    const exercises = await db.getExercises(exId);
+    const exercises = await db.getExercises(goalId);
     res.status(200).json(exercises);
   } catch (err) {
     console.log(err);
@@ -14,17 +14,19 @@ router.get('/:exId', restricted, async (req, res) => {
   }
 });
 
-router.post('/', restricted, async (req, res) => {
+router.post('/:goalId', restricted, async (req, res) => {
+  const { goalId } = req.params;
   const exObj = {
     exercises: req.body.exercises,
     date: moment().format('MMMM Do YYYY'),
-    goal_id: req.body.goalId
+    goal_id: goalId
   }
   try {
     const [id] = await db.insertExercise(exObj);
     console.log(id);
     if (id) {
-      res.status(201).json({ message: 'Exercise has been added' });
+      const exercises = await db.getExercises(goalId);
+      res.status(201).json(exercises);
     }
   } catch (err) {
     console.log(err);
