@@ -48,7 +48,8 @@ router.put('/:goalId', restricted, async (req, res) => {
     const result = await db.updateGoal(userId, goalId, goalObj);
     console.log(result);
     if (result) {
-      res.status(200).json({ message: 'Goal updated' });
+      const goals = await db.getGoals(userId)
+      res.status(200).json(goals);
     } else {
       res.status(404).json({ message: 'Goal not found' });
     }
