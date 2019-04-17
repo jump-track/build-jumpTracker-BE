@@ -41,7 +41,6 @@ router.put('/:goalId', restricted, async (req, res) => {
   const { goalId } = req.params;
   const userId = req.decodedJwt.id;
   const goalObj = {
-    jump_height: req.body.jumpHeight,
     completed: req.body.completed
   }
   console.log(goalId);

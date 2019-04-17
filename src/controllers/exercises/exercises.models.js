@@ -2,11 +2,12 @@ const knex = require('../../data/dbConfig.js');
 
 const insertExercise = async ex =>
   knex('exercises')
-    .insert(ex)
+    .insert(ex, ['id'])
 
 const getExercises = async id =>
   knex('exercises')
-    .where('id', id)
+    .where('goal_id', id)
+    .select('exercises', 'date')
 
 module.exports = {
   insertExercise,
