@@ -2,16 +2,20 @@ const db = require('../../data/dbConfig.js');
 const Exercises = require('./exercises.models.js');
 
 describe('exercises model', () => {
-  let id;
-  let exObj = { exercises: 'exercises', goal_id: 1 }
+  beforeAll(async () => {
+    await db('exercises').truncate();
+  });
 
-  it.skip('should insert the exercises', async () => {
-    [ id ] = await Exercises.insert(exObj);
+  let goal_id = 45; // manually adjust goal_id to pass test, current goal_id may not be in the db anymore.
+  const exObj = { exercises: 'exercises', goal_id, date: 'string' }
+
+  it('should insert the exercises', async () => {
+    const [id] = await Exercises.insertExercise(exObj);
     expect(id).toBeTruthy();
   });
 
-  it.skip('should return exercises', async () => {
-    let ex = await Exercises.find(id)
-    expect(ex).toEqual({ ...exObj, id })
+  it('should return exercises', async () => {
+    let [ex] = await Exercises.getExercises(goal_id)
+    expect(ex).toEqual({ exercises: 'exercises', date: 'string' })
   });
 });

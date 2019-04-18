@@ -12,6 +12,7 @@ const getGoals = async id =>
 const findById = async id =>
   knex('goals')
     .where('id', id)
+    .first();
 
 const updateGoal = async (userId, goalId, goal) =>
   knex('goals')

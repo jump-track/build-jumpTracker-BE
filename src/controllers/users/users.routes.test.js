@@ -3,9 +3,10 @@ const server = require('../../api/server.js');
 
 describe('users route', () => {
   describe('POST /users/register', () => {
+    // This works  - skip test - change username when testing.
     it.skip('should respond with 201 Create and return token', async () => {
       const userObj = {
-        username: 'test62',
+        username: 'test100',
         password: 'test62',
         height: 175,
         jumpHeight: 50

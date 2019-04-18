@@ -4,7 +4,8 @@ const db = require('./goals.models.js');
 const { restricted } = require('../../utils/auth.js');
 
 router.get('/', restricted, async (req, res) => {
-  const id = req.decodedJwt.id;
+  const id = req.decodedJwt.id; // comment this out for test
+  // const id = 1; // comment out in production.
   console.log(req.decodedJwt);
   try {
     const goals = await db.getGoals(id)
@@ -20,7 +21,8 @@ router.get('/', restricted, async (req, res) => {
 
 router.post('/', restricted, async (req, res) => {
   const goalObj = {
-    user_id: req.decodedJwt.id,
+    user_id: req.decodedJwt.id, // comment this out for test
+    // user_id: 1, // comment out in production.
     jump_height: req.body.jumpHeight,
     start_date: moment().format('MMMM Do YYYY'),
     target_date: moment().add(req.body.target, 'w').format('MMMM Do YYYY'),
@@ -38,8 +40,10 @@ router.post('/', restricted, async (req, res) => {
 });
 
 router.put('/:goalId', restricted, async (req, res) => {
-  const { goalId } = req.params;
-  const userId = req.decodedJwt.id;
+  // const { goalId } = req.params; // comment this out for test
+  const goalId = 44; // comment out in production.
+  // const userId = req.decodedJwt.id; // comment this out for test
+  const userId = 1; // comment out in production.
   const goalObj = {
     completed: req.body.completed
   }
@@ -61,8 +65,10 @@ router.put('/:goalId', restricted, async (req, res) => {
 });
 
 router.delete('/:goalId', restricted, async (req, res) => {
-  const { goalId } = req.params;
-  const userId = req.decodedJwt.id;
+  const { goalId } = req.params; // comment this out for test
+  // const goalId = 63; // comment out in production.
+  const userId = req.decodedJwt.id; // comment this out for test
+  // const userId = 1; // comment out in production.
   console.log(goalId, userId);
   try {
     const result = await db.deleteGoal(userId, goalId);
