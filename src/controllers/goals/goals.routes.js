@@ -45,7 +45,7 @@ router.post('/',
 
 router.put('/:goalId',
   restricted,
-  isCompletedTrue,
+  // isCompletedTrue,
   async (req, res) => {
     const { goalId } = req.params; // comment this out for test
     // const goalId = 44; // comment out in production.
@@ -112,14 +112,14 @@ async function checkGoalPayloadDataTypes(req, res, next) {
   }
 }
 
-async function isCompletedTrue(req, res, next) {
-  console.log('is completed', req.body);
-  if (req.body && req.body.completed) {
-    next();
-  } else {
-    res.status(400).json({ message: 'Must complete goal' });
-  }
-}
+// async function isCompletedTrue(req, res, next) {
+//   console.log('is completed', req.body);
+//   if (req.body && req.body.completed) {
+//     next();
+//   } else {
+//     res.status(400).json({ message: 'Must complete goal' });
+//   }
+// }
 
 
 module.exports = router;
