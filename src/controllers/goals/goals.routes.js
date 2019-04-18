@@ -10,7 +10,7 @@ router.get('/', restricted, async (req, res) => {
   try {
     const goals = await db.getGoals(id)
     const response = goals.map(goal => ({
-      ...goal, completed: goal.completed ? 'true' : 'false'
+      ...goal, completed: goal.completed ? true : false
     }));
     res.status(200).json(response);
   } catch (err) {
