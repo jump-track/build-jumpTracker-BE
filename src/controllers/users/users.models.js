@@ -1,29 +1,23 @@
 const knex = require('../../data/dbConfig.js');
 
-const insert = async user =>
+const insertUser = async user =>
   knex('users')
     .insert(user, ['id'])
 
-const find = async id =>
-  knex('users')
-    .where('id', id)
-    .first()
-
-const get = async username =>
+const getByUsername = async username =>
   knex('users')
     .select('username')
     .where('username', username)
     .first()
 
-const validate = async username =>
+const validateUser = async username =>
   knex('users')
     .select('username', 'id', 'password')
     .where('username', username)
     .first()
 
 module.exports = {
-  insert,
-  find,
-  get,
-  validate
+  insertUser,
+  getByUsername,
+  validateUser
 }

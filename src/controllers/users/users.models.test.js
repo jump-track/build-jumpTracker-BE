@@ -6,12 +6,12 @@ describe('user model', () => {
   let userObj = { username: `test${id}`, password: 'test', height: 175, jump_height: 40 }
 
   it.skip('should insert the user', async () => {
-    const [ id ] = await Users.insert(userObj);
+    const [ id ] = await Users.insertUser(userObj);
     expect(id).toBeTruthy();
   });
 
   it.skip('should return user', async () => {
-    let user = await Users.find(id)
+    let user = await Users.getByUsername(userObj.username)
     expect(user).toEqual({ id: id, username: `test${id}`, password: 'test', height: 175, jump_height: 40 })
   });
 });

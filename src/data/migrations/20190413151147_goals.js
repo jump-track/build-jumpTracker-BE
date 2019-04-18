@@ -4,24 +4,6 @@ exports.up = knex =>
       .increments();
 
     tbl
-      .integer('jump_height')
-      .notNullable();
-
-    tbl
-      .boolean('completed')
-      .notNullable()
-      .defaultTo(false)
-
-    tbl
-      .timestamp('start_date')
-      .notNullable()
-      .defaultTo(knex.fn.now());
-
-    tbl
-      .timestamp('target_date')
-      .notNullable()
-
-    tbl
       .integer('user_id')
       .unsigned()
       .notNullable()
@@ -29,6 +11,23 @@ exports.up = knex =>
       .inTable('users')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+
+    tbl
+      .integer('jump_height')
+      .notNullable();
+
+    tbl
+      .string('start_date')
+      .notNullable();
+
+    tbl
+      .string('target_date')
+      .notNullable()
+
+    tbl
+      .boolean('completed')
+      .notNullable()
+      .defaultTo(false)
   })
 
 exports.down = knex => knex.schema.dropTableIfExists('goals');

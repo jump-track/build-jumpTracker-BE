@@ -17,9 +17,8 @@ exports.up = knex =>
       .onUpdate('CASCADE');
 
     tbl
-      .timestamp('date')
-      .notNullable()
-      .defaultTo(knex.fn.now());
+      .string('date')
+      .notNullable();
   })
 
 exports.down = knex => knex.schema.dropTableIfExists('exercises');

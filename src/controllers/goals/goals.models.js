@@ -1,28 +1,38 @@
 const knex = require('../../data/dbConfig.js');
 
-const insert = async goal =>
+const insertGoal = async goal =>
   knex('goals')
-    .insert(goal)
+    .insert(goal, ['id'])
 
-const find = async id =>
+const getGoals = async id =>
+  knex('goals')
+    .where('user_id', id)
+    .select('id', 'jump_height', 'start_date', 'target_date', 'completed')
+
+const findById = async id =>
   knex('goals')
     .where('id', id)
-    .first()
 
-const update = async (id, goal) =>
+const updateGoal = async (userId, goalId, goal) =>
   knex('goals')
-    .where('id', id)
+    .where({
+      user_id: userId,
+      id: goalId
+    })
     .update(goal)
 
-const del = async id => {
+const deleteGoal = async (userId, goalId) =>
   knex('goals')
-    .where('id', id)
+    .where({
+      user_id: userId,
+      id: goalId
+    })
     .del()
-}
 
 module.exports = {
-  insert,
-  find,
-  update,
-  del
+  insertGoal,
+  findById,
+  updateGoal,
+  deleteGoal,
+  getGoals
 }
